@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Lcrnice</title>
+  <subtitle>Hi,我是刘传瑞(@Lcrnice)，一个不断学习的iOS开发者。</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://lcrnice.github.com/"/>
+  <updated>2016-04-18T13:26:02.000Z</updated>
+  <id>http://lcrnice.github.com/</id>
+  
+  <author>
+    <name>Lcrnice</name>
+    <email>lcrnice@gmail.com</email>
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello world</title>
+    <link href="http://lcrnice.github.com/2016/04/18/Hello-world/"/>
+    <id>http://lcrnice.github.com/2016/04/18/Hello-world/</id>
+    <published>2016-04-18T13:11:53.000Z</published>
+    <updated>2016-04-18T13:26:02.000Z</updated>
+    
+    <content type="html">&lt;p&gt;其实我是一个很懒的人，不然不会现在才开始写博客  ╮(╯▽╰)╭&lt;/p&gt;
+&lt;p&gt;人性本就如此，不然世间也就不会多是碌碌无为之人了。&lt;/p&gt;
+&lt;p&gt;最后:&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;生活就像海洋，只有意志坚强的人，才能到达彼岸。&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;其实我是一个很懒的人，不然不会现在才开始写博客  ╮(╯▽╰)╭&lt;/p&gt;
+&lt;p&gt;人性本就如此，不然世间也就不会多是碌碌无为之人了。&lt;/p&gt;
+&lt;p&gt;最后:&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;co
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
