@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lcrnice.github.com/"/>
-  <updated>2016-04-18T13:26:02.000Z</updated>
+  <updated>2016-04-20T10:52:11.000Z</updated>
   <id>http://lcrnice.github.com/</id>
   
   <author>
@@ -14,6 +14,86 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>iOS开发工具2016[译]</title>
+    <link href="http://lcrnice.github.com/2016/04/20/iOS%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B72016-%E8%AF%91/"/>
+    <id>http://lcrnice.github.com/2016/04/20/iOS开发工具2016-译/</id>
+    <published>2016-04-20T04:15:15.000Z</published>
+    <updated>2016-04-20T10:52:11.000Z</updated>
+    
+    <content type="html">&lt;p&gt;&lt;img src=&quot;http://7xt6wu.com2.z0.glb.clouddn.com/blog:myiOSDevelopmentToolKit_img.jpeg&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;本文列举了我最近正在用的一些工具，包括：iOS开发工具，网站，服务以及框架。&lt;/p&gt;
+&lt;h2 id=&quot;服务类&quot;&gt;&lt;a href=&quot;#服务类&quot; class=&quot;headerlink&quot; title=&quot;服务类&quot;&gt;&lt;/a&gt;服务类&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://get.fabric.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Fabric&lt;/a&gt;针对你iOS Apps的一款模块化、跨平台的移动开发套件&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://developer.apple.com/testflight/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Testflight&lt;/a&gt;是原生的测试平台&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://smooch.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;SupportKit&lt;/a&gt;或&lt;a href=&quot;https://smooch.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Smooch&lt;/a&gt;是一款很棒的信息传递SDK，我最近正在通过它来获取用户的反馈消息&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://mixpanel.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Mixpanel&lt;/a&gt;移动端分析工具&lt;/li&gt;
+&lt;li&gt;我通过&lt;a href=&quot;https://trello.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Trello&lt;/a&gt;来管理我的私有项目&lt;/li&gt;
+&lt;li&gt;在团队协作中，我更偏爱使用&lt;a href=&quot;https://de.atlassian.com/software/jira&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;JIRA&lt;/a&gt;配合&lt;a href=&quot;https://en.wikipedia.org/wiki/Scrum_%28software_development%29&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;SCRUM&lt;/a&gt;和&lt;a href=&quot;https://www.atlassian.com/git/tutorials/comparing-workflows/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Gitflow Workflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;工具类&quot;&gt;&lt;a href=&quot;#工具类&quot; class=&quot;headerlink&quot; title=&quot;工具类&quot;&gt;&lt;/a&gt;工具类&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;使用&lt;a href=&quot;https://fastlane.tools/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Fastlane&lt;/a&gt;让你的持续化交付更简单&lt;/li&gt;
+&lt;li&gt;我使用&lt;a href=&quot;https://luckymarmot.com/de/paw&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;PAW&lt;/a&gt;进行测试和编辑APIs&lt;/li&gt;
+&lt;li&gt;找出内存泄露等问题使用&lt;a href=&quot;https://developer.apple.com/library/watchos/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Instruments&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/realm/jazzy&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Jazzy&lt;/a&gt;是一款命令行使用程序，用于生成Swift或Objective-C的文档&lt;/li&gt;
+&lt;li&gt;如果你使用GIT，我强烈推荐&lt;a href=&quot;https://www.sourcetreeapp.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Source Tree&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;当需要使用Ruby或者Python来工作时，我更喜欢使用&lt;a href=&quot;https://atom.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Atom&lt;/a&gt;来替代Xcode&lt;/li&gt;
+&lt;li&gt;一款很棒的Xcode插件管理工具&lt;a href=&quot;http://alcatraz.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Alcatraz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://cocoapods.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Cocoa Pods&lt;/a&gt;是一款帮助iOS应用管理依赖库的系统&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/Carthage/Carthage&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Carthage&lt;/a&gt;是一款用于Cocoa的，简洁的分散式依赖管理工具&lt;/li&gt;
+&lt;li&gt;如果你想查看设备中的&lt;strong&gt;&lt;em&gt;HTTP-Request&lt;/em&gt;&lt;/strong&gt;，那就使用&lt;a href=&quot;https://www.charlesproxy.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Charles&lt;/a&gt;吧&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/facebook/chisel&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Chisel&lt;/a&gt;帮助你用&lt;strong&gt;&lt;em&gt;LLDB&lt;/em&gt;&lt;/strong&gt;命令进行调试&lt;/li&gt;
+&lt;li&gt;让图像变成代码&lt;a href=&quot;http://www.paintcodeapp.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Paint Code&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://icons8.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Icons8 App&lt;/a&gt;提供了23,400免费的图标&lt;/li&gt;
+&lt;li&gt;如果你想找Mac OS上Photoshop的替代品，&lt;a href=&quot;http://www.pixelmator.com/mac/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Pixelmator&lt;/a&gt;是一个很棒的选择&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;框架-amp-函数库&quot;&gt;&lt;a href=&quot;#框架-amp-函数库&quot; class=&quot;headerlink&quot; title=&quot;框架 &amp;amp; 函数库&quot;&gt;&lt;/a&gt;框架 &amp;amp; 函数库&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;在Objective-C中，网络请求最便捷的当然是&lt;a href=&quot;http://afnetworking/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AFNetworking&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;在Swift中，网络请求可以使用&lt;a href=&quot;https://github.com/Alamofire/Alamofire&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Alamofire&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/facebook/Tweaks&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;FBTweaks&lt;/a&gt;在Runtime中操作参数是个不错的选择&lt;/li&gt;
+&lt;li&gt;Git分支处理&lt;a href=&quot;https://www.atlassian.com/git/tutorials/comparing-workflows/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Gitflow Workflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://realm.io/docs/swift/latest/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Realm&lt;/a&gt;是一款Core Data的替代品&lt;/li&gt;
+&lt;li&gt;为了更便捷、高效，在Swift项目中使用&lt;a href=&quot;https://github.com/mac-cain13/R.swift&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;R.swift&lt;/a&gt;可以自动联想image, fonts, segues&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/conopsys/COSTouchVisualizer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;COSTouchVisualizer&lt;/a&gt;显现你在iPhone或iPad上的轻拍、手势和长按等操作&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/realm/SwiftLint&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;SwiftLint&lt;/a&gt;是一款强制约束你Swif代码风格和规范的工具，当不遵守规范时会直接在Xcode中报错误或警告&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;博客-amp-网站&quot;&gt;&lt;a href=&quot;#博客-amp-网站&quot; class=&quot;headerlink&quot; title=&quot;博客 &amp;amp; 网站&quot;&gt;&lt;/a&gt;博客 &amp;amp; 网站&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.raywenderlich.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Ray Wenderlich&lt;/a&gt;提供了很多高质量的编程教程&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://nshipster.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;NSHipster&lt;/a&gt;是一个杂志，介绍了平时被忽略的，Objective-C, Swift和Cocoa中的知识点，每周更新&lt;/li&gt;
+&lt;li&gt;每周更新iOS开发的视频&lt;a href=&quot;http://nsscreencast.com/episodes&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;NSScreencast&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;一个优质的博客&lt;a href=&quot;https://www.natashatherobot.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Natasha the Robot&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;为你的项目创建可用的.gitignore文件&lt;a href=&quot;https://www.gitignore.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;gitignore.io&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://pttrns.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Pttrns&lt;/a&gt;收集了很多设计资源和灵感&lt;/li&gt;
+&lt;li&gt;你可以在&lt;a href=&quot;https://iosdev.tools/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;iOSDev.tools&lt;/a&gt;找到很多iOS相关的工具和资源&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.cocoacontrols.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Cocoa Controls&lt;/a&gt;提供了4200个iOS和OS X上的开源UI组件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;播客&quot;&gt;&lt;a href=&quot;#播客&quot; class=&quot;headerlink&quot; title=&quot;播客&quot;&gt;&lt;/a&gt;播客&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.coreint.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Core Intuition&lt;/a&gt;是一个关于Mac, iOS和其他Apple技术的，独立软件开发播客&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devchat.tv/iphreaks/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;iPhreaks&lt;/a&gt;是一个讨论平台，既有iOS相关技术，也有其他方面的内容，每周更新&lt;/li&gt;
+&lt;li&gt;非常棒的App开发博客&lt;a href=&quot;https://www.raywenderlich.com/rwpodcast&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;The RayWenderlich.com Podcast&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;gt-译文源文《My-iOS-Development-Toolkit-2016》&quot;&gt;&lt;a href=&quot;#gt-译文源文《My-iOS-Development-Toolkit-2016》&quot; class=&quot;headerlink&quot; title=&quot;-&amp;gt;译文源文《My iOS Development Toolkit 2016》&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://medium.com/ios-os-x-development/my-ios-development-toolkit-2016-ba7601b68085#.s6m9uc3wl&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;-&amp;gt;&lt;strong&gt;&lt;em&gt;译文源文《My iOS Development Toolkit 2016》&lt;/em&gt;&lt;/strong&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;—————————————————————————————————————————————————————————&lt;/p&gt;
+&lt;h2 id=&quot;总结&quot;&gt;&lt;a href=&quot;#总结&quot; class=&quot;headerlink&quot; title=&quot;总结&quot;&gt;&lt;/a&gt;总结&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;原文中推荐的很多服务都是在国外非常受欢迎的，但是有一部分服务是&lt;strong&gt;&lt;em&gt;付费&lt;/em&gt;&lt;/strong&gt;的，可以按需选取。国内也有&lt;a href=&quot;http://www.umeng.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;友盟&lt;/a&gt;、&lt;a href=&quot;http://fir.im&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;fir&lt;/a&gt;等类似的免费平台。&lt;/li&gt;
+&lt;li&gt;工具类都是大家耳熟能详的库，使用GIT在可视化工具上，个人更偏向于&lt;a href=&quot;https://www.git-tower.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Tower&lt;/a&gt;，可以配合其他对比软件(eg:&lt;a href=&quot;http://www.kaleidoscopeapp.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Kaleidoscope&lt;/a&gt;)，在查看修改部分的代码时非常方便；当需要编写其他语言时，个人认为&lt;a href=&quot;https://www.sublimetext.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Sublime Text&lt;/a&gt;很强大，可以安装需要的插件，居家必备。&lt;/li&gt;
+&lt;li&gt;框架和函数库数不胜数，原文只列举了一些非常有名、好用的库，如果就此展开讨论，一篇博客恐怕是不够的。&lt;/li&gt;
+&lt;li&gt;相比于国外的博客，可能国内的开发者更偏向于查看国内的博客，但原文推荐的博客和网址都属精品，都强烈推荐。(&lt;a href=&quot;https://www.objc.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;objc&lt;/a&gt;原文并没有介绍，不知为何)&lt;/li&gt;
+&lt;li&gt;相比于博客，国外播客就显得有些鸡肋，看博客还好，听播客可就没那么愉悦了 (￣﹏￣)&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;http://7xt6wu.com2.z0.glb.clouddn.com/blog:myiOSDevelopmentToolKit_img.jpeg&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;本文列举了我最近正在用的一些工具，包括：iOS开发工具，网站，
+    
+    </summary>
+    
+    
+      <category term="iOS" scheme="http://lcrnice.github.com/tags/iOS/"/>
+    
+      <category term="工具" scheme="http://lcrnice.github.com/tags/%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
   
   <entry>
     <title>Hello world</title>
