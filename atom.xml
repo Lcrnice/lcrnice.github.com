@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Lcrnice</title>
-  <subtitle>Hi,我是刘传瑞(@Lcrnice)，一个不断学习的iOS开发者。</subtitle>
+  
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lcrnice.github.com/"/>
-  <updated>2016-04-20T10:52:11.000Z</updated>
+  <updated>2016-04-23T15:50:44.000Z</updated>
   <id>http://lcrnice.github.com/</id>
   
   <author>
@@ -14,6 +14,89 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Method Swizzling的剖析与实践</title>
+    <link href="http://lcrnice.github.com/2016/04/23/Method-Swizzling%E7%9A%84%E5%89%96%E6%9E%90%E4%B8%8E%E5%AE%9E%E8%B7%B5/"/>
+    <id>http://lcrnice.github.com/2016/04/23/Method-Swizzling的剖析与实践/</id>
+    <published>2016-04-23T15:50:17.000Z</published>
+    <updated>2016-04-23T15:50:44.000Z</updated>
+    
+    <content type="html">&lt;p&gt;&lt;img src=&quot;http://7xt6wu.com2.z0.glb.clouddn.com/blog:methodSwizzingExchange.png&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;在iOS开发中，有时我们会有这样的需求：想改变某一个系统类的实现，但在项目中逐一修改工作量太过于庞大，这时&lt;strong&gt;Method Swizzling&lt;/strong&gt;就显现出了ta的强大。&lt;/p&gt;
+&lt;p&gt;Method Swizzling是针对Objective-C中selector实现hook的方法，基于OC中的动态特性runtime，达到替换方法的目的。&lt;/p&gt;
+&lt;h2 id=&quot;基本原理&quot;&gt;&lt;a href=&quot;#基本原理&quot; class=&quot;headerlink&quot; title=&quot;基本原理&quot;&gt;&lt;/a&gt;基本原理&lt;/h2&gt;&lt;p&gt;想理解Method Swizzling就需要了解Objective-C的基础&lt;strong&gt;消息机制&lt;/strong&gt;。OC中的每一个类都有一个&lt;code&gt;Dispatch Table&lt;/code&gt;，将每个方法的名字&lt;code&gt;SEL&lt;/code&gt;（一个C字符串）与方法的实现&lt;code&gt;IMP&lt;/code&gt;（指向方法实现函数开始位置的指针）分别对应起来。当我们执行方法A时，OC就会从Dispatch Table中找出方法A所对应的函数IMP，如果找到则执行函数内的代码，如下：&lt;br&gt;&lt;img src=&quot;http://7xt6wu.com2.z0.glb.clouddn.com/blog:originDispatchTable.png&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;Method Swizzling其实就是利用OC的动态特性，利用runtime把方法A的实现与方法B的实现进行交换。&lt;br&gt;例如：我希望在每个视图控制器的-viewWillAppear执行后，在控制台输出&lt;code&gt;@&amp;quot;yoho, swift~&amp;quot;&lt;/code&gt;。那么就可以用一个新的方法-cr_viewWillAppear来替换系统API，cr_viewWillAppear中打印类名，通过Method Swizzling替换后，当前类的Dispatch Table如下：&lt;br&gt;&lt;img src=&quot;http://7xt6wu.com2.z0.glb.clouddn.com/blog:swizzlingDispatchTable.png&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;Swizzling后，当前我们在-viewWillAppear中调用&lt;code&gt;[super viewWillAppear:animated];&lt;/code&gt;时，则会调用重定向后-cr_viewWillAppear方法的实现；在-cr_viewWillAppear中调用&lt;code&gt;[self cr_viewWillAppear:animated];&lt;/code&gt;时，则会调用系统-viewWillAppear的实现。这也是为什么在Swizzling后不会出现递归的根本原因。&lt;/p&gt;
+&lt;h2 id=&quot;具体实现&quot;&gt;&lt;a href=&quot;#具体实现&quot; class=&quot;headerlink&quot; title=&quot;具体实现&quot;&gt;&lt;/a&gt;具体实现&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Method Swizzling是非原子性的，因此，应该放在&lt;code&gt;dispatch_once&lt;/code&gt;中执行，确保Swizzling代码只执行一次。&lt;/strong&gt;同样的，包含Method Swizzling的dispatch_once代码，应该放在&lt;code&gt;+(void)load&lt;/code&gt;方法中调用。(之所以不选择+initialize方法，是因为+load会在类初始加载时调用，而+initialize方法当前类的实例方法或类方法被调用时才执行，会增加程序中的不确定因素，可能导致并发问题),实例方法的例子：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&quot;objectivec&quot;&gt;&lt;span class=&quot;meta&quot;&gt;#import &lt;span class=&quot;meta-string&quot;&gt;&amp;lt;objc/runtime.h&amp;gt;&lt;/span&gt;&lt;/span&gt;
+
+&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;@implementation&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;UIViewController&lt;/span&gt; (&lt;span class=&quot;title&quot;&gt;CRSwizzling&lt;/span&gt;)&lt;/span&gt;
+
++ (&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)load {
+    [&lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt; cr_swizzlingMethod:&lt;span class=&quot;keyword&quot;&gt;@selector&lt;/span&gt;(viewWillAppear:)
+                  withAltSEL:&lt;span class=&quot;keyword&quot;&gt;@selector&lt;/span&gt;(cr_viewWillAppear:)];
+}
+
+&lt;span class=&quot;meta&quot;&gt;#pragma mark - Method Swizzling&lt;/span&gt;
++ (&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)cr_swizzlingMethod:(SEL)originSEL withAltSEL:(SEL)altSEL {
+    &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;dispatch_once_t&lt;/span&gt; onceToken;
+    &lt;span class=&quot;built_in&quot;&gt;dispatch_once&lt;/span&gt;(&amp;amp;onceToken, ^{
+        Class class = [&lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt; class];
+
+        SEL originalSelector = originSEL;
+        SEL swizzledSelector = altSEL;
+
+        Method originalMethod = class_getInstanceMethod(class, originalSelector);
+        Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
+
+        &lt;span class=&quot;built_in&quot;&gt;BOOL&lt;/span&gt; didAddMethod = class_addMethod(class,
+                                            originalSelector,
+                                            method_getImplementation(swizzledMethod),
+                                            method_getTypeEncoding(swizzledMethod));
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (didAddMethod) {
+
+            class_replaceMethod(class,
+                                swizzledSelector,
+                                method_getImplementation(originalMethod),
+                                method_getTypeEncoding(originalMethod));
+        } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+            method_exchangeImplementations(originalMethod, swizzledMethod);
+        }
+
+    });
+}
+
+&lt;span class=&quot;meta&quot;&gt;#pragma mark - Custom Method&lt;/span&gt;
+- (&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)cr_viewWillAppear:(&lt;span class=&quot;built_in&quot;&gt;BOOL&lt;/span&gt;)animated {
+    [&lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt; cr_viewWillAppear:animated];
+    &lt;span class=&quot;built_in&quot;&gt;NSLog&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;@&quot;yoho, swift~&quot;&lt;/span&gt;);
+}
+
+&lt;span class=&quot;keyword&quot;&gt;@end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;当有继承关系的类存在时，Swizzling会从父类开始。&lt;/strong&gt;例如一个视图控制器SubViewController继承于ViewController，那么当SubViewController需要走Swizzling方法时，发现已经在父类中使用&lt;code&gt;dispatch_once&lt;/code&gt;执行过了，那么SubViewController的-viewWillAppear就会在调用&lt;code&gt;[super viewWillAppear:animated];&lt;/code&gt;时，执行父类Swizzling时走过的步骤。&lt;br&gt;显示viewController的时候，控制台输出：&lt;br&gt;&lt;img src=&quot;http://7xt6wu.com2.z0.glb.clouddn.com/blog:swizzlingControl01.png&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;显示SubViewController的时候，控制台输出：&lt;br&gt;&lt;img src=&quot;http://7xt6wu.com2.z0.glb.clouddn.com/blog:swizzlingControl02.png&quot; alt=&quot;overview&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如上讲解的demo在-&amp;gt;&lt;a href=&quot;https://github.com/Lcrnice/MethodSwizzlingDemo&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;注意事项-amp-讨论&quot;&gt;&lt;a href=&quot;#注意事项-amp-讨论&quot; class=&quot;headerlink&quot; title=&quot;注意事项 &amp;amp; 讨论&quot;&gt;&lt;/a&gt;注意事项 &amp;amp; 讨论&lt;/h2&gt;&lt;p&gt;Swizzling是基于runtime的一种&lt;em&gt;巴拉巴拉魔法&lt;/em&gt;，所以最好遵循一些原则，避免出现&lt;em&gt;魔法四溢&lt;/em&gt;的现象。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;需要调用父类原始方法。&lt;/strong&gt;毕竟我们不知道闭源的原始方法内部实现是什么╮(╯_╰)╭&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;给重定向的方法加前缀。&lt;/strong&gt;类似于示例demo中的cr_xx，避免出现冲突。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;按需使用。&lt;/strong&gt;对于runtime的&lt;em&gt;巴拉巴拉魔法&lt;/em&gt;，用好了是利刃可以势如破竹，用不好反而容易伤到自己。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;推荐&quot;&gt;&lt;a href=&quot;#推荐&quot; class=&quot;headerlink&quot; title=&quot;推荐&quot;&gt;&lt;/a&gt;推荐&lt;/h2&gt;&lt;p&gt;其实如上这种，通过Method Swizzling动态更改方法的方式被称为——&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%90%91%E4%BE%A7%E9%9D%A2%E7%9A%84%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Aspect Oriented Programming（面向切面编程）&lt;/a&gt;，简称AOP。&lt;br&gt;关于Objective-C中的AOP应用，GitHub上已经有了很棒的库——&lt;a href=&quot;https://github.com/steipete/Aspects&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Aspects&lt;/a&gt;。Aspects通过runtime封装了一套很完善的hook方案，在日常项目中如果需要使用Method Swizzling，可以直接用CocoaPods导入&lt;a href=&quot;https://github.com/steipete/Aspects&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Aspects&lt;/a&gt;，使用起来也非常便捷。  &lt;/p&gt;
+&lt;p&gt;以上。&lt;/p&gt;
+&lt;h4 id=&quot;参考资源&quot;&gt;&lt;a href=&quot;#参考资源&quot; class=&quot;headerlink&quot; title=&quot;参考资源:&quot;&gt;&lt;/a&gt;参考资源:&lt;/h4&gt;&lt;p&gt;&lt;a href=&quot;http://nshipster.com/method-swizzling/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Method Swizzling&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/yiyaaixuexi/article/details/9374411&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Objective-C的hook方案（一）: Method Swizzling&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://stackoverflow.com/questions/5339276/what-are-the-dangers-of-method-swizzling-in-objective-c&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;What are the Dangers of Method Swizzling in Objective C?&lt;/a&gt;  &lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;http://7xt6wu.com2.z0.glb.clouddn.com/blog:methodSwizzingExchange.png&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;在iOS开发中，有时我们会有这样的需求：想改变某一个系统类的实现，但在项目
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>iOS开发工具2016[译]</title>
@@ -105,14 +188,14 @@
     <content type="html">&lt;p&gt;其实我是一个很懒的人，不然不会现在才开始写博客  ╮(╯▽╰)╭&lt;/p&gt;
 &lt;p&gt;人性本就如此，不然世间也就不会多是碌碌无为之人了。&lt;/p&gt;
 &lt;p&gt;最后:&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;生活就像海洋，只有意志坚强的人，才能到达彼岸。&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</content>
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;生活就像海洋，只有意志坚强的人，才能到达彼岸。&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</content>
     
     <summary type="html">
     
       &lt;p&gt;其实我是一个很懒的人，不然不会现在才开始写博客  ╮(╯▽╰)╭&lt;/p&gt;
 &lt;p&gt;人性本就如此，不然世间也就不会多是碌碌无为之人了。&lt;/p&gt;
 &lt;p&gt;最后:&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;co
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gu
     
     </summary>
     

@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Method Swizzling的剖析与实践 · Lcrnice</title><meta name="description" content="Method Swizzling的剖析与实践 - Lcrnice"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="short icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="stylesheet" href="http://fonts.useso.com/css?family=Source+Sans+Pro:400,600" type="text/css"></head><body><div id="mask" style="display: none;"><img id="mask-image" src="#" style=" "></div><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/u/2597892552" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/lcrnice" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><section class="container"><div class="post"><article class="post-block"><h1 class="post-title">Method Swizzling的剖析与实践</h1><div class="post-time">2016年4月23日</div><div class="post-content"><p><img src="http://7xt6wu.com2.z0.glb.clouddn.com/blog:methodSwizzingExchange.png" alt="overview"><br>在iOS开发中，有时我们会有这样的需求：想改变某一个系统类的实现，但在项目中逐一修改工作量太过于庞大，这时<strong>Method Swizzling</strong>就显现出了ta的强大。</p>
+<p>Method Swizzling是针对Objective-C中selector实现hook的方法，基于OC中的动态特性runtime，达到替换方法的目的。</p>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>想理解Method Swizzling就需要了解Objective-C的基础<strong>消息机制</strong>。OC中的每一个类都有一个<code>Dispatch Table</code>，将每个方法的名字<code>SEL</code>（一个C字符串）与方法的实现<code>IMP</code>（指向方法实现函数开始位置的指针）分别对应起来。当我们执行方法A时，OC就会从Dispatch Table中找出方法A所对应的函数IMP，如果找到则执行函数内的代码，如下：<br><img src="http://7xt6wu.com2.z0.glb.clouddn.com/blog:originDispatchTable.png" alt="overview"><br>Method Swizzling其实就是利用OC的动态特性，利用runtime把方法A的实现与方法B的实现进行交换。<br>例如：我希望在每个视图控制器的-viewWillAppear执行后，在控制台输出<code>@&quot;yoho, swift~&quot;</code>。那么就可以用一个新的方法-cr_viewWillAppear来替换系统API，cr_viewWillAppear中打印类名，通过Method Swizzling替换后，当前类的Dispatch Table如下：<br><img src="http://7xt6wu.com2.z0.glb.clouddn.com/blog:swizzlingDispatchTable.png" alt="overview"><br>Swizzling后，当前我们在-viewWillAppear中调用<code>[super viewWillAppear:animated];</code>时，则会调用重定向后-cr_viewWillAppear方法的实现；在-cr_viewWillAppear中调用<code>[self cr_viewWillAppear:animated];</code>时，则会调用系统-viewWillAppear的实现。这也是为什么在Swizzling后不会出现递归的根本原因。</p>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><ul>
+<li><strong>Method Swizzling是非原子性的，因此，应该放在<code>dispatch_once</code>中执行，确保Swizzling代码只执行一次。</strong>同样的，包含Method Swizzling的dispatch_once代码，应该放在<code>+(void)load</code>方法中调用。(之所以不选择+initialize方法，是因为+load会在类初始加载时调用，而+initialize方法当前类的实例方法或类方法被调用时才执行，会增加程序中的不确定因素，可能导致并发问题),实例方法的例子：</li>
+</ul>
+<pre><code class="objectivec"><span class="meta">#import <span class="meta-string">&lt;objc/runtime.h&gt;</span></span>
+
+<span class="class"><span class="keyword">@implementation</span> <span class="title">UIViewController</span> (<span class="title">CRSwizzling</span>)</span>
+
++ (<span class="keyword">void</span>)load {
+    [<span class="keyword">self</span> cr_swizzlingMethod:<span class="keyword">@selector</span>(viewWillAppear:)
+                  withAltSEL:<span class="keyword">@selector</span>(cr_viewWillAppear:)];
+}
+
+<span class="meta">#pragma mark - Method Swizzling</span>
++ (<span class="keyword">void</span>)cr_swizzlingMethod:(SEL)originSEL withAltSEL:(SEL)altSEL {
+    <span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken;
+    <span class="built_in">dispatch_once</span>(&amp;onceToken, ^{
+        Class class = [<span class="keyword">self</span> class];
+
+        SEL originalSelector = originSEL;
+        SEL swizzledSelector = altSEL;
+
+        Method originalMethod = class_getInstanceMethod(class, originalSelector);
+        Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
+
+        <span class="built_in">BOOL</span> didAddMethod = class_addMethod(class,
+                                            originalSelector,
+                                            method_getImplementation(swizzledMethod),
+                                            method_getTypeEncoding(swizzledMethod));
+        <span class="keyword">if</span> (didAddMethod) {
+
+            class_replaceMethod(class,
+                                swizzledSelector,
+                                method_getImplementation(originalMethod),
+                                method_getTypeEncoding(originalMethod));
+        } <span class="keyword">else</span> {
+            method_exchangeImplementations(originalMethod, swizzledMethod);
+        }
+
+    });
+}
+
+<span class="meta">#pragma mark - Custom Method</span>
+- (<span class="keyword">void</span>)cr_viewWillAppear:(<span class="built_in">BOOL</span>)animated {
+    [<span class="keyword">self</span> cr_viewWillAppear:animated];
+    <span class="built_in">NSLog</span>(<span class="string">@"yoho, swift~"</span>);
+}
+
+<span class="keyword">@end</span>
+</code></pre>
+<ul>
+<li><strong>当有继承关系的类存在时，Swizzling会从父类开始。</strong>例如一个视图控制器SubViewController继承于ViewController，那么当SubViewController需要走Swizzling方法时，发现已经在父类中使用<code>dispatch_once</code>执行过了，那么SubViewController的-viewWillAppear就会在调用<code>[super viewWillAppear:animated];</code>时，执行父类Swizzling时走过的步骤。<br>显示viewController的时候，控制台输出：<br><img src="http://7xt6wu.com2.z0.glb.clouddn.com/blog:swizzlingControl01.png" alt="overview"><br>显示SubViewController的时候，控制台输出：<br><img src="http://7xt6wu.com2.z0.glb.clouddn.com/blog:swizzlingControl02.png" alt="overview"></li>
+</ul>
+<p>如上讲解的demo在-&gt;<a href="https://github.com/Lcrnice/MethodSwizzlingDemo" target="_blank" rel="external">这里</a></p>
+<h2 id="注意事项-amp-讨论"><a href="#注意事项-amp-讨论" class="headerlink" title="注意事项 &amp; 讨论"></a>注意事项 &amp; 讨论</h2><p>Swizzling是基于runtime的一种<em>巴拉巴拉魔法</em>，所以最好遵循一些原则，避免出现<em>魔法四溢</em>的现象。  </p>
+<ul>
+<li><strong>需要调用父类原始方法。</strong>毕竟我们不知道闭源的原始方法内部实现是什么╮(╯_╰)╭</li>
+<li><strong>给重定向的方法加前缀。</strong>类似于示例demo中的cr_xx，避免出现冲突。</li>
+<li><strong>按需使用。</strong>对于runtime的<em>巴拉巴拉魔法</em>，用好了是利刃可以势如破竹，用不好反而容易伤到自己。  </li>
+</ul>
+<h2 id="推荐"><a href="#推荐" class="headerlink" title="推荐"></a>推荐</h2><p>其实如上这种，通过Method Swizzling动态更改方法的方式被称为——<a href="https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%90%91%E4%BE%A7%E9%9D%A2%E7%9A%84%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1" target="_blank" rel="external">Aspect Oriented Programming（面向切面编程）</a>，简称AOP。<br>关于Objective-C中的AOP应用，GitHub上已经有了很棒的库——<a href="https://github.com/steipete/Aspects" target="_blank" rel="external">Aspects</a>。Aspects通过runtime封装了一套很完善的hook方案，在日常项目中如果需要使用Method Swizzling，可以直接用CocoaPods导入<a href="https://github.com/steipete/Aspects" target="_blank" rel="external">Aspects</a>，使用起来也非常便捷。  </p>
+<p>以上。</p>
+<h4 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源:"></a>参考资源:</h4><p><a href="http://nshipster.com/method-swizzling/" target="_blank" rel="external">Method Swizzling</a><br><a href="http://blog.csdn.net/yiyaaixuexi/article/details/9374411" target="_blank" rel="external">Objective-C的hook方案（一）: Method Swizzling</a><br><a href="http://stackoverflow.com/questions/5339276/what-are-the-dangers-of-method-swizzling-in-objective-c" target="_blank" rel="external">What are the Dangers of Method Swizzling in Objective C?</a>  </p>
+</div></article></div></section><footer><div class="paginator"><a href="/2016/04/20/iOS开发工具2016-译/" class="next">下一篇</a></div><div data-thread-key="2016/04/23/Method-Swizzling的剖析与实践/" data-title="Method Swizzling的剖析与实践" data-url="http://lcrnice.github.com/2016/04/23/Method-Swizzling的剖析与实践/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+
+</script><div class="copyright"> <p>感兴趣可以关注<a href="https://github.com/Lcrnice">我的GitHub</a> 或关注微博<a href="http://weibo.com/u/2597892552/">@Lcrnice丶</a></p><p>© 2015 - 2016 <a href="http://lcrnice.github.com">Lcrnice</a> · Powered by Hexo</p></div></footer></div><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script></body></html>
