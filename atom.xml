@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lcrnice.github.com/"/>
-  <updated>2016-04-23T15:50:44.000Z</updated>
+  <updated>2016-05-19T07:18:48.000Z</updated>
   <id>http://lcrnice.github.com/</id>
   
   <author>
@@ -16,11 +16,35 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>[面膜时间]的前世今生（一）</title>
+    <link href="http://lcrnice.github.com/2016/05/16/%E9%9D%A2%E8%86%9C%E6%97%B6%E9%97%B4-%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>http://lcrnice.github.com/2016/05/16/面膜时间-的前世今生（一）/</id>
+    <published>2016-05-16T09:42:17.000Z</published>
+    <updated>2016-05-19T07:18:48.000Z</updated>
+    
+    <content type="html">&lt;p&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/blog:masktime_splash.png&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;这是一个亦产品、亦开发的人，对他曾经做过的一款产品——&lt;a href=&quot;https://itunes.apple.com/cn/app/mian-mo-shi-jian-rang-mian/id985477146?mt=8&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;面膜时间&lt;/a&gt;的纪念。之所以称之为&lt;code&gt;“纪念”&lt;/code&gt;，是因为…可能&lt;code&gt;她&lt;/code&gt;再也不会有新的改动了。  &lt;/p&gt;
+&lt;h2 id=&quot;记得最初我们的相遇&quot;&gt;&lt;a href=&quot;#记得最初我们的相遇&quot; class=&quot;headerlink&quot; title=&quot;-记得最初我们的相遇-&quot;&gt;&lt;/a&gt;-记得最初我们的相遇-&lt;/h2&gt;&lt;p&gt;第一次见到[面膜时间]，是在方驰设计的设计图上。当时的她只有tab上只有两个分类：面膜计时、我的面膜。首页表盘上的淡粉色是&lt;strong&gt;基础面膜时间&lt;/strong&gt;，墨绿色是根据肤质生成的&lt;strong&gt;面膜加成时间&lt;/strong&gt;。淡粉色的基调，简洁明了的设计，让我对即将开始的开发跃跃欲试。&lt;br&gt;然而真正开始开发之后，办公室里最多的就是争执的声音。需求的增加，产品细节的调整，让整个APP的研发速度受到了很大的影响。但是，随着争吵的减少，慢慢&lt;code&gt;第一版&lt;/code&gt;面膜时间也终于浮出水面↓&lt;br&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/blog:masktime_v1_timing.png&quot; alt=&quot;mt_v1_timer&quot;&gt;&lt;br&gt;第一版[面膜时间]有两点主要功能：&lt;br&gt;1.&lt;em&gt;针对不同肤质进行准确计时&lt;/em&gt;&lt;br&gt;2.&lt;em&gt;提供相应建议（计划）&lt;/em&gt;&lt;br&gt;&lt;strong&gt;功能1&lt;/strong&gt; 妹子可以通过&lt;code&gt;肤质测试&lt;/code&gt;让[面膜时间]知道你的肤质属于偏油、偏干还是混合，然后[面膜时间]会自动把这个时间计算到当前的总时间中去，显示为&lt;em&gt;墨绿色的进度条&lt;/em&gt;（by the way, 下面的八个按钮，就是妹子手里面膜的类型）。当计时完成还会有铃音提示↓&lt;br&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/blog:masktime_v1_timeout.png&quot; alt=&quot;mt_v1_timeout&quot;&gt;&lt;br&gt;上图中增加积分中有一个&lt;code&gt;完成建议&lt;/code&gt;，就是第一版中的&lt;strong&gt;功能2&lt;/strong&gt;&lt;code&gt;建议&lt;/code&gt;↓&lt;br&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/blog:masktime_v1_%20advice.png&quot; alt=&quot;mt_v1_suggest&quot;&gt;&lt;br&gt;建议类似于&lt;strong&gt;计划&lt;/strong&gt;，但当时产品层面考虑再三，觉得建议的感觉跟温和，就采用了这个词。上图&lt;strong&gt;计时&lt;/strong&gt;tab中，&lt;strong&gt;水&lt;/strong&gt;字选中会有一个小红心在右上角，就说明当前选中的面膜类型是推荐的。妹子听话的按建议走，会有更多积分奖励 (〃∀〃)~♡&lt;br&gt;『第一版主要实现的功能就是&lt;strong&gt;计时&lt;/strong&gt;，从工具入手，给爱敷面膜的妹子提供最方便的计时服务』  &lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/blog:masktime_splash.png&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;这是一个亦产品、亦开发的人，对他曾经做过的一款产品——&lt;a href=&quot;https://
+    
+    </summary>
+    
+    
+      <category term="iOS" scheme="http://lcrnice.github.com/tags/iOS/"/>
+    
+      <category term="MaskTime" scheme="http://lcrnice.github.com/tags/MaskTime/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Method Swizzling的剖析与实践</title>
     <link href="http://lcrnice.github.com/2016/04/23/Method-Swizzling%E7%9A%84%E5%89%96%E6%9E%90%E4%B8%8E%E5%AE%9E%E8%B7%B5/"/>
     <id>http://lcrnice.github.com/2016/04/23/Method-Swizzling的剖析与实践/</id>
     <published>2016-04-23T15:50:17.000Z</published>
-    <updated>2016-04-23T15:50:44.000Z</updated>
+    <updated>2016-05-16T09:43:20.000Z</updated>
     
     <content type="html">&lt;p&gt;&lt;img src=&quot;http://7xt6wu.com2.z0.glb.clouddn.com/blog:methodSwizzingExchange.png&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;在iOS开发中，有时我们会有这样的需求：想改变某一个系统类的实现，但在项目中逐一修改工作量太过于庞大，这时&lt;strong&gt;Method Swizzling&lt;/strong&gt;就显现出了ta的强大。&lt;/p&gt;
 &lt;p&gt;Method Swizzling是针对Objective-C中selector实现hook的方法，基于OC中的动态特性runtime，达到替换方法的目的。&lt;/p&gt;
@@ -96,14 +120,18 @@
     </summary>
     
     
+      <category term="iOS" scheme="http://lcrnice.github.com/tags/iOS/"/>
+    
+      <category term="runtime" scheme="http://lcrnice.github.com/tags/runtime/"/>
+    
   </entry>
   
   <entry>
-    <title>iOS开发工具2016[译]</title>
-    <link href="http://lcrnice.github.com/2016/04/20/iOS%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B72016-%E8%AF%91/"/>
-    <id>http://lcrnice.github.com/2016/04/20/iOS开发工具2016-译/</id>
+    <title>iOS开发工具2016</title>
+    <link href="http://lcrnice.github.com/2016/04/20/iOS%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B72016/"/>
+    <id>http://lcrnice.github.com/2016/04/20/iOS开发工具2016/</id>
     <published>2016-04-20T04:15:15.000Z</published>
-    <updated>2016-04-20T10:52:11.000Z</updated>
+    <updated>2016-05-16T09:44:32.000Z</updated>
     
     <content type="html">&lt;p&gt;&lt;img src=&quot;http://7xt6wu.com2.z0.glb.clouddn.com/blog:myiOSDevelopmentToolKit_img.jpeg&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;本文列举了我最近正在用的一些工具，包括：iOS开发工具，网站，服务以及框架。&lt;/p&gt;
 &lt;h2 id=&quot;服务类&quot;&gt;&lt;a href=&quot;#服务类&quot; class=&quot;headerlink&quot; title=&quot;服务类&quot;&gt;&lt;/a&gt;服务类&lt;/h2&gt;&lt;ul&gt;
