@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lcrnice.github.com/"/>
-  <updated>2016-05-19T07:18:48.000Z</updated>
+  <updated>2016-07-02T10:49:43.000Z</updated>
   <id>http://lcrnice.github.com/</id>
   
   <author>
@@ -14,6 +14,40 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>帮你做一个整洁又正经的Branch</title>
+    <link href="http://lcrnice.github.com/2016/07/02/%E5%B8%AE%E4%BD%A0%E4%BD%9C%E4%B8%80%E4%B8%AA%E6%95%B4%E6%B4%81%E5%8F%88%E6%AD%A3%E7%BB%8F%E7%9A%84branch/"/>
+    <id>http://lcrnice.github.com/2016/07/02/帮你作一个整洁又正经的branch/</id>
+    <published>2016-07-02T06:25:24.000Z</published>
+    <updated>2016-07-02T10:49:43.000Z</updated>
+    
+    <content type="html">&lt;p&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/git:GitPullRebase.png&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;团队协作开发中，都会用到&lt;a href=&quot;https://zh.wikipedia.org/wiki/VCS&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;&lt;code&gt;版本控制系统(VCS)&lt;/code&gt;&lt;/a&gt;，通过ta我们能高效、便捷的控制团队中的代码和文件。相比较于SVN，&lt;a href=&quot;https://zh.wikipedia.org/wiki/Git&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Git&lt;/a&gt;作为分散式版本控制系統，对于&lt;code&gt;分支(branch)&lt;/code&gt;的操作更加健全，通过将开发(develop)、新特性(feature)、热修复(hotfix)等模块化的操作，放到特定分支进行操作，方便管理和推进。在此需求上衍生出了Git的一个扩展集——&lt;a href=&quot;http://danielkummer.github.io/git-flow-cheatsheet/index.zh_CN.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;git-flow&lt;/a&gt;，能够非常方便的在各个分支间进行操作。但是在&lt;code&gt;Branch&lt;/code&gt;带给我们这么多便利的同时，也给我们的维护带来了一些常见的问题。&lt;/p&gt;
+&lt;h3 id=&quot;Q：&quot;&gt;&lt;a href=&quot;#Q：&quot; class=&quot;headerlink&quot; title=&quot;Q：&quot;&gt;&lt;/a&gt;Q：&lt;/h3&gt;&lt;p&gt;团队多人开发时，你在使用&lt;a href=&quot;http://gitx.frim.nl/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitX&lt;/a&gt;查看代码log时，是否遇到过这样的情况…&lt;br&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/git:confusionBranches.png&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;好吧，可能一般不会有这么混乱的分支结构，但如果不多加留意的话，你们团队的分支结构也会很难分辨，给维护分支带来了很大的困难。所以我们心中都希望分支是这样的…&lt;br&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/git:cleanBranches.png&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;当前&lt;code&gt;Branch&lt;/code&gt;中，每一次commit都很清晰，正式我们所想要的。  &lt;/p&gt;
+&lt;p&gt;那么让分支中像图1这么混乱的的原因是什么呢？如何避免产生这种无意义的分支呢？  (｡•ˇ‸ˇ•｡)  &lt;/p&gt;
+&lt;h3 id=&quot;A&quot;&gt;&lt;a href=&quot;#A&quot; class=&quot;headerlink&quot; title=&quot;A:&quot;&gt;&lt;/a&gt;A:&lt;/h3&gt;&lt;p&gt;原因：&lt;br&gt;在获取代码时，我们通常会使用&lt;code&gt;git pull&lt;/code&gt;来拉取origin的代码。而这一步操作，本质上是&lt;code&gt;fetch&lt;/code&gt;+&lt;code&gt;merge&lt;/code&gt;的结合体，如果只有一个人对远端仓库进行管理的话，不会出现上述问题，但是多人频繁对同一个远端Branch进行操作的话，会因为拉取代码后local和remote对同一文件都进行了修改，git pull会在&lt;code&gt;fetch&lt;/code&gt;后对这部分修改自动将本地repo和远端repo进行&lt;code&gt;merge&lt;/code&gt;操作，并在终端中提示你当前的merge branch，这就造成了上图充满了&lt;em&gt;梦幻色彩&lt;/em&gt;的Branch结构。  &lt;/p&gt;
+&lt;p&gt;解决方案：&lt;br&gt;使用&lt;code&gt;git pull --rebase&lt;/code&gt;替代&lt;code&gt;git pull&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&quot;git-pull-–rebase&quot;&gt;&lt;a href=&quot;#git-pull-–rebase&quot; class=&quot;headerlink&quot; title=&quot;git pull –rebase&quot;&gt;&lt;/a&gt;git pull –rebase&lt;/h3&gt;&lt;p&gt;使用&lt;code&gt;--rebase&lt;/code&gt;时，Git会先将本地的repo暂存起来，并从上次pull时的状态下拉取远端最新的代码，最后在套用本地的变更。这种样相当于对本地Branch进行了一步&lt;code&gt;对齐&lt;/code&gt;的操作，这就避免了git pull带来的一些不必要的Merge Branch。&lt;br&gt;这里有一个小细节需要注意：基于如上所说的操作，本地repo相当于重新提交，SHA-1会变，并且会作为最后一次commit(但是提交时间不变)。&lt;/p&gt;
+&lt;h3 id=&quot;关于解决冲突&quot;&gt;&lt;a href=&quot;#关于解决冲突&quot; class=&quot;headerlink&quot; title=&quot;关于解决冲突&quot;&gt;&lt;/a&gt;关于解决冲突&lt;/h3&gt;&lt;h4 id=&quot;Merge-解决冲突&quot;&gt;&lt;a href=&quot;#Merge-解决冲突&quot; class=&quot;headerlink&quot; title=&quot;Merge 解决冲突&quot;&gt;&lt;/a&gt;Merge 解决冲突&lt;/h4&gt;&lt;p&gt;使用merge时，发生了冲突，merge会在当前分支中提示你存在冲突，当你修改冲突后，需要在把修改作为一次commit提交到当前分支。&lt;/p&gt;
+&lt;h4 id=&quot;Rebase-解决冲突&quot;&gt;&lt;a href=&quot;#Rebase-解决冲突&quot; class=&quot;headerlink&quot; title=&quot;Rebase 解决冲突&quot;&gt;&lt;/a&gt;Rebase 解决冲突&lt;/h4&gt;&lt;p&gt;使用rebase时，发生冲突时，Git会自动切换到一个新建的临时分支。当在临时分支中解决冲突后，需要&lt;code&gt;git add .&lt;/code&gt;将修改加入暂存区(stage area)，在运行&lt;code&gt;git rebase --continue&lt;/code&gt;继续rebase，Git会自动切换回原本的分支，此时就完成了冲突的解决，并且&lt;code&gt;不会新增commit&lt;/code&gt;，解决冲突的代码归属于本地repo。  &lt;/p&gt;
+&lt;p&gt;rebase时有多个commit发生冲突，需要解决多次…所以说，rebase在带来整洁、正经分支的同时，也可能会浪费你很多时间来解决冲突，较大规模的代码合并还是推荐使用merge。&lt;/p&gt;
+&lt;h3 id=&quot;“偷懒”技巧&quot;&gt;&lt;a href=&quot;#“偷懒”技巧&quot; class=&quot;headerlink&quot; title=&quot;“偷懒”技巧&quot;&gt;&lt;/a&gt;“偷懒”技巧&lt;/h3&gt;&lt;p&gt;如果我们希望一直采用&lt;code&gt;--rebase&lt;/code&gt;的操作，但是有感觉有时候会忘记加，还需要reset之后重新操作。那么我就在告诉你一个“偷懒”的技巧~&lt;br&gt;为当前项目配置rebase操作：&lt;br&gt;进入.git路径，打开config配置文件，在当前分支配置选项中加入&lt;code&gt;rebase = ture&lt;/code&gt;&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;[branch &amp;quot;yourBranch&amp;quot;]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    remote = origin&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    merge = refs/heads/yourBranch&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    rebase = true&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;为mac中所有项目配置rebase操作：&lt;br&gt;直接加到~/.gitconfig中，让所有追踪的Branch都遵守这个规则&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;[branch]  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  autosetuprebase = always&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&quot;最后&quot;&gt;&lt;a href=&quot;#最后&quot; class=&quot;headerlink&quot; title=&quot;最后&quot;&gt;&lt;/a&gt;最后&lt;/h3&gt;&lt;p&gt;遵循以上的方式，你就已经做出了一个‘整洁又正经的Branch’了~ 在版本记录中，看着一条整齐划一的提交线，方便管理的同时，心中轻微的强迫症也得到了些许治愈 (❁´▽`❁)&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/git:GitPullRebase.png&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;团队协作开发中，都会用到&lt;a href=&quot;https://zh.wikipedia.org/w
+    
+    </summary>
+    
+    
+      <category term="iOS" scheme="http://lcrnice.github.com/tags/iOS/"/>
+    
+      <category term="Git" scheme="http://lcrnice.github.com/tags/Git/"/>
+    
+  </entry>
   
   <entry>
     <title>[面膜时间]的前世今生（一）</title>
