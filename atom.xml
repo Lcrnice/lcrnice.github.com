@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lcrnice.github.com/"/>
-  <updated>2016-07-02T10:49:43.000Z</updated>
+  <updated>2016-07-31T15:22:01.000Z</updated>
   <id>http://lcrnice.github.com/</id>
   
   <author>
@@ -14,6 +14,40 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>需要设计师知道的一个小细节</title>
+    <link href="http://lcrnice.github.com/2016/07/30/%E9%9C%80%E8%A6%81%E8%AE%BE%E8%AE%A1%E5%B8%88%E7%9F%A5%E9%81%93%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82/"/>
+    <id>http://lcrnice.github.com/2016/07/30/需要设计师知道的一个小细节/</id>
+    <published>2016-07-30T00:41:25.000Z</published>
+    <updated>2016-07-31T15:22:01.000Z</updated>
+    
+    <content type="html">&lt;p&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/blog:%E9%9C%80%E8%A6%81%E8%AE%BE%E8%AE%A1%E5%B8%88%E7%9F%A5%E9%81%93%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82.png&quot; alt=&quot;overview&quot;&gt;&lt;/p&gt;
+&lt;p&gt;当产品经理将这个版本的需求明确之后，攻城狮在梳理逻辑的同时，应该就收到了设计师交给我们的&lt;code&gt;标注图&lt;/code&gt;。虽然我觉得千篇一律的基础控件写起来没有干劲儿，但就是这些最常使用的基础控件，还是会让我们耗费很多时间来调整。  &lt;/p&gt;
+&lt;h2 id=&quot;难道我写错了？&quot;&gt;&lt;a href=&quot;#难道我写错了？&quot; class=&quot;headerlink&quot; title=&quot;难道我写错了？&quot;&gt;&lt;/a&gt;难道我写错了？&lt;/h2&gt;&lt;p&gt;现在开发者通常会用&lt;a href=&quot;https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/AutolayoutPG/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;&lt;code&gt;AutoLayout&lt;/code&gt;&lt;/a&gt;来写UI，主要的参考元素是控件四边(edges)距离其他控件的距离(offset)。  &lt;/p&gt;
+&lt;p&gt;然而，当我们完全按照标注图搞出了一个视图后，得意洋洋的把效果图发给设计师后，设计却过来说：&lt;strong&gt;和标注图不一样！&lt;/strong&gt;&lt;br&gt;(程序猿内心：掀桌(╯‵□′)╯︵┻━┻)  &lt;/p&gt;
+&lt;p&gt;等等，在我们召唤九尾出来进入暴走状态之前，先想想原因：&lt;em&gt;我的确是按照标注图设置的间距，为什么和效果图不一样呢？难道我写错了？&lt;/em&gt;（黑人疑问脸）  &lt;/p&gt;
+&lt;h2 id=&quot;可能的原因&quot;&gt;&lt;a href=&quot;#可能的原因&quot; class=&quot;headerlink&quot; title=&quot;可能的原因&quot;&gt;&lt;/a&gt;可能的原因&lt;/h2&gt;&lt;p&gt;其实很有可能是&lt;code&gt;标注图中有文字需要用UILabel来实现&lt;/code&gt;，而其实很多设计师给你的标注图都是&lt;code&gt;“错的”&lt;/code&gt;。  &lt;/p&gt;
+&lt;p&gt;(并且大家都知道：AutoLayout约束Label只需要两个定量确定UILabel的origin即可，size Label会根据文字自我适配。下文中的栗子也是以Label自适应size为基础的)  &lt;/p&gt;
+&lt;h2 id=&quot;举个栗子🌰&quot;&gt;&lt;a href=&quot;#举个栗子🌰&quot; class=&quot;headerlink&quot; title=&quot;举个栗子🌰&quot;&gt;&lt;/a&gt;举个栗子🌰&lt;/h2&gt;&lt;p&gt;假设你的设计师，给你一张这样的标注图：&lt;br&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/blog:UIDesignLabelImage.png&quot; alt=&quot;labelImage&quot;&gt;&lt;br&gt;看上去&lt;em&gt;没毛病&lt;/em&gt;，文字的颜色、字体大小、&lt;strong&gt;top&lt;/strong&gt;、&lt;strong&gt;padding&lt;/strong&gt;都已经明确的标注出来了，图中都是&lt;a href=&quot;https://zh.wikipedia.org/zh/%E5%83%8F%E7%B4%A0&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;px(像素)&lt;/a&gt;的标注，iOS使用pt(也就是point，pt = px/2)，四个标题规格相同，最顶部和最底部的标题offset都是&lt;strong&gt;21pt&lt;/strong&gt;，文字间距是&lt;strong&gt;15pt&lt;/strong&gt;，cell高度为&lt;strong&gt;140pt&lt;/strong&gt;。  &lt;/p&gt;
+&lt;p&gt;可是，完全按照标注图的标注使用&lt;em&gt;&lt;a href=&quot;https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/AutolayoutPG/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AutoLayout&lt;/a&gt;&lt;/em&gt;从上到下约束后，模拟器效果图却是这样的:&lt;br&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/blog:UIDesignSimulatorLabels.png&quot; alt=&quot;模拟器效果图&quot;&gt;&lt;br&gt;模拟器效果图中，黑色部分是使用&lt;em&gt;&lt;a href=&quot;https://github.com/adad184/MMPlaceHolder&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MMPlaceHolder&lt;/a&gt;&lt;/em&gt;将标题间距离用pt尺寸显示了出来，可以看得出，Label间的间距的确是如标注图中的一样，&lt;strong&gt;top = 21pt&lt;/strong&gt;，&lt;strong&gt;padding = 15pt&lt;/strong&gt;，但是row = 0的cell底部间距超出了cell很大一部分。  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Why?&lt;/strong&gt;  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;A:&lt;/strong&gt;&lt;code&gt;因为UILabel每个字号都存在一个“最小高度值”。&lt;/code&gt;这个最小高度值会保证当前字号下，任何字符串都不会超出UILabel所在的区域。这个机制就导致如果UI设计师如上图所示一样标注&lt;em&gt;文字&lt;/em&gt;与其他视图间的标注，会让我们完成的效果图与预期有很大的偏差。&lt;br&gt;用图表示会更直观一些：&lt;br&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/blog:UIDesignTestLabel.png&quot; alt=&quot;testLabel&quot;&gt;&lt;br&gt;上图中，灰色区域为&lt;code&gt;UILabel&lt;/code&gt;，可以看出，不同文字的top距离UILabel的top有不同的间距，细想之下，这是一个十分合理的设计。假设标注图中，title的位置，将&lt;code&gt;@&amp;quot;标题1：&amp;quot;&lt;/code&gt;用三个中文“一”&lt;code&gt;@&amp;quot;一一一：&amp;quot;&lt;/code&gt;来表示的话，那标注图简直…&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;需要注意的一个小点是：UILabel多行自适应时，其高度height = n(行数) * aLineHeight(单行高度)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&quot;最后&quot;&gt;&lt;a href=&quot;#最后&quot; class=&quot;headerlink&quot; title=&quot;最后&quot;&gt;&lt;/a&gt;最后&lt;/h2&gt;&lt;p&gt;简单搞了一个常用字号和对应最小高度关联的图表，便于让你跟你的设计师沟通，说请这件事，只需要让设计师在做图或标注的时候，将文字对应字号的高度预留出来，就可以免除开发和设计很多不必要的时间开销。&lt;br&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/blog:UIDesignStandardLabes.png&quot; alt=&quot;labelForm&quot;&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/blog:%E9%9C%80%E8%A6%81%E8%AE%BE%E8%AE%A1%E5%B8%88%E7%9F%A5%E9%81%93%E7%9A%84%E4%B8%80%E4
+    
+    </summary>
+    
+    
+      <category term="iOS" scheme="http://lcrnice.github.com/tags/iOS/"/>
+    
+      <category term="UI" scheme="http://lcrnice.github.com/tags/UI/"/>
+    
+  </entry>
   
   <entry>
     <title>帮你做一个整洁又正经的Branch</title>
