@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lcrnice.github.com/"/>
-  <updated>2016-07-31T15:22:01.000Z</updated>
+  <updated>2016-08-17T15:55:03.000Z</updated>
   <id>http://lcrnice.github.com/</id>
   
   <author>
@@ -14,6 +14,72 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>新版Reveal的正确使用方式(1.6.3)</title>
+    <link href="http://lcrnice.github.com/2016/08/17/%E6%96%B0%E7%89%88Reveal%E7%9A%84%E6%AD%A3%E7%A1%AE%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F-1-6-3/"/>
+    <id>http://lcrnice.github.com/2016/08/17/新版Reveal的正确使用方式-1-6-3/</id>
+    <published>2016-08-17T14:39:01.000Z</published>
+    <updated>2016-08-17T15:55:03.000Z</updated>
+    
+    <content type="html">&lt;p&gt;&lt;img src=&quot;http://revealapp.com/assets/reveal_icon@2x-88a93e84a082c1b800339cff8759e722011859fbcd210ee3549e0b2e5815b0a7.png&quot; alt=&quot;overview&quot;&gt;&lt;/p&gt;
+&lt;p&gt;如果把和控件打交道比作是打副本的话，那&lt;a href=&quot;http://revealapp.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Reveal&lt;/a&gt;就相当于是一件顶级的装备。  &lt;/p&gt;
+&lt;h2 id=&quot;Reveal的强大&quot;&gt;&lt;a href=&quot;#Reveal的强大&quot; class=&quot;headerlink&quot; title=&quot;Reveal的强大&quot;&gt;&lt;/a&gt;Reveal的强大&lt;/h2&gt;&lt;p&gt;Reveal是一个很强大的iOS View Hierarchy工具，通过Reveal可以在开发中得到一些帮助：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;帮助排查开发过程出现视图层级、坐标不正确的问题  &lt;/li&gt;
+&lt;li&gt;实时修改某一个视图的颜色、坐标等属性  &lt;/li&gt;
+&lt;li&gt;查看视图的具体约束，帮助解决约束冲突  &lt;/li&gt;
+&lt;li&gt;保存正在调试APP的层级文件，便于协作交流&lt;/li&gt;
+&lt;li&gt;越狱机器上查看其它APP的层级、布局方式  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;错误的打开方式&quot;&gt;&lt;a href=&quot;#错误的打开方式&quot; class=&quot;headerlink&quot; title=&quot;错误的打开方式&quot;&gt;&lt;/a&gt;错误的打开方式&lt;/h2&gt;&lt;p&gt;早期使用Reveal的时候，在网上查看过一些博客，按照各位博主的方法，成功实现了在开发过程中调试无忧的目的。  &lt;/p&gt;
+&lt;p&gt;你通常在早期博客里看到的使用方式是这样的：  &lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+通过 reveal_load_sim 为模拟器加载Reveal的动态库  
+通过 reveal_load_dev 为真机加载Reveal的动态库  
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&quot;http://7xt6wu.com1.z0.glb.clouddn.com/blog:Reveal_oldMethod.png&quot; alt=&quot;overview&quot;&gt;&lt;br&gt;然而… 在Reveal 1.6版本，好用吗？(・ω・)  &lt;/p&gt;
+&lt;h2 id=&quot;正确的姿势&quot;&gt;&lt;a href=&quot;#正确的姿势&quot; class=&quot;headerlink&quot; title=&quot;正确的姿势&quot;&gt;&lt;/a&gt;正确的姿势&lt;/h2&gt;&lt;p&gt;Reveal的集成姿势有三种：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://support.revealapp.com/kb/getting-started/reveal-2&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;使用静态连接的方式集成Reveal&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://support.revealapp.com/kb/getting-started/reveal-3&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;使用动态加载的方式集成Reveal&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://support.revealapp.com/kb/getting-started/cocoapodsreveal&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;使用CocoaPods来集成Reveal&lt;/a&gt;  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;文档见如上链接，本文不会累述（没错，我就是懒的介绍(๑˘ ₃˘๑)），本文只介绍使用&lt;a href=&quot;https://cocoapods.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CocoaPods&lt;/a&gt;的真机测试方式，以及全局Xcode模拟器的测试方式。  &lt;/p&gt;
+&lt;p&gt;==&amp;gt; 真机📱&lt;br&gt;使用CocoaPods为真机测试集成Reveal非常简单，基本步骤如下： &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;项目目录下&lt;code&gt;$ vim Podfile&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;加入&lt;code&gt;pod &amp;#39;Reveal-iOS-SDK&amp;#39;, :configurations =&amp;gt; [&amp;#39;Debug&amp;#39;]&lt;/code&gt;  &lt;/li&gt;
+&lt;li&gt;安装Pod&lt;code&gt;$ pod install&lt;/code&gt;   &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;安装完成后，你的工程就已经为真机Debug模式，配置好了Reveal使用所需要的设置，此时你Run起你的项目，就可以在Reveal上查看层级了。  &lt;/p&gt;
+&lt;p&gt;==&amp;gt; 模拟器💻&lt;br&gt;相比于真机，我们在模拟器上运行的次数会更多，基本步骤如下：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;增加一个系统断点，工程  View → Navigators → Show Breakpoint Navigator，点击左下角 &lt;strong&gt;+&lt;/strong&gt; 号，选择&lt;strong&gt;Add Symbolic Breakpoint&lt;/strong&gt;  &lt;/li&gt;
+&lt;li&gt;在弹出的断点配置框中，设置&lt;strong&gt;Symbol&lt;/strong&gt;为&lt;strong&gt;UIApplicationMain&lt;/strong&gt;  &lt;/li&gt;
+&lt;li&gt;点击&lt;strong&gt;Add Action&lt;/strong&gt;（Debugger Command 模式）输入：&lt;code&gt;expr (Class)NSClassFromString(@&amp;quot;IBARevealLoader&amp;quot;) == nil ? (void *)dlopen(&amp;quot;/Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/libReveal.dylib&amp;quot;, 0x2) : ((void*)0)&lt;/code&gt;  &lt;/li&gt;
+&lt;li&gt;勾选&lt;strong&gt;Automatically continue after evaluating actions&lt;/strong&gt;选项  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;此时，Run后就可以利用Reveal查看层级了，不过这样每个工程都需要配置这个断点，很是麻烦，可以通过如下方式一劳永逸：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;右键刚创建的断点&lt;/li&gt;
+&lt;li&gt;选择&lt;strong&gt;Move Breakpoint To&lt;/strong&gt; → &lt;strong&gt;User&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Done.&lt;/p&gt;
+&lt;h2 id=&quot;Finally&quot;&gt;&lt;a href=&quot;#Finally&quot; class=&quot;headerlink&quot; title=&quot;Finally&quot;&gt;&lt;/a&gt;Finally&lt;/h2&gt;&lt;p&gt;至此，终于可以用&lt;strong&gt;正确的姿势&lt;/strong&gt;在真机、模拟器运行后，尽情的在Reveal上查看层级、修改属性啦！(≖‿ゝ≖)✧&lt;/p&gt;
+&lt;p&gt;注：如果对Reveal想更深入的了解，移步&lt;a href=&quot;http://support.revealapp.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://support.revealapp.com/&lt;/a&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;http://revealapp.com/assets/reveal_icon@2x-88a93e84a082c1b800339cff8759e722011859fbcd210ee3549e0b2e5815b0a7.png&quot; alt=&quot;overview&quot;
+    
+    </summary>
+    
+    
+      <category term="iOS" scheme="http://lcrnice.github.com/tags/iOS/"/>
+    
+  </entry>
   
   <entry>
     <title>需要设计师知道的一个小细节</title>

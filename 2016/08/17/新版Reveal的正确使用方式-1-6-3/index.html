@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 新版Reveal的正确使用方式(1.6.3) · Lcrnice</title><meta name="description" content="新版Reveal的正确使用方式(1.6.3) - Lcrnice"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="short icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="stylesheet" href="http://fonts.useso.com/css?family=Source+Sans+Pro:400,600" type="text/css"></head><body><div id="mask" style="display: none;"><img id="mask-image" src="#" style=" "></div><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/u/2597892552" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/lcrnice" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><section class="container"><div class="post"><article class="post-block"><h1 class="post-title">新版Reveal的正确使用方式(1.6.3)</h1><div class="post-time">2016年8月17日</div><div class="post-content"><p><img src="http://revealapp.com/assets/reveal_icon@2x-88a93e84a082c1b800339cff8759e722011859fbcd210ee3549e0b2e5815b0a7.png" alt="overview"></p>
+<p>如果把和控件打交道比作是打副本的话，那<a href="http://revealapp.com/" target="_blank" rel="external">Reveal</a>就相当于是一件顶级的装备。  </p>
+<h2 id="Reveal的强大"><a href="#Reveal的强大" class="headerlink" title="Reveal的强大"></a>Reveal的强大</h2><p>Reveal是一个很强大的iOS View Hierarchy工具，通过Reveal可以在开发中得到一些帮助：  </p>
+<ul>
+<li>帮助排查开发过程出现视图层级、坐标不正确的问题  </li>
+<li>实时修改某一个视图的颜色、坐标等属性  </li>
+<li>查看视图的具体约束，帮助解决约束冲突  </li>
+<li>保存正在调试APP的层级文件，便于协作交流</li>
+<li>越狱机器上查看其它APP的层级、布局方式  </li>
+</ul>
+<h2 id="错误的打开方式"><a href="#错误的打开方式" class="headerlink" title="错误的打开方式"></a>错误的打开方式</h2><p>早期使用Reveal的时候，在网上查看过一些博客，按照各位博主的方法，成功实现了在开发过程中调试无忧的目的。  </p>
+<p>你通常在早期博客里看到的使用方式是这样的：  </p>
+<pre><code>
+通过 reveal_load_sim 为模拟器加载Reveal的动态库  
+通过 reveal_load_dev 为真机加载Reveal的动态库  
+...
+</code></pre><p><img src="http://7xt6wu.com1.z0.glb.clouddn.com/blog:Reveal_oldMethod.png" alt="overview"><br>然而… 在Reveal 1.6版本，好用吗？(・ω・)  </p>
+<h2 id="正确的姿势"><a href="#正确的姿势" class="headerlink" title="正确的姿势"></a>正确的姿势</h2><p>Reveal的集成姿势有三种：  </p>
+<ul>
+<li><a href="http://support.revealapp.com/kb/getting-started/reveal-2" target="_blank" rel="external">使用静态连接的方式集成Reveal</a></li>
+<li><a href="http://support.revealapp.com/kb/getting-started/reveal-3" target="_blank" rel="external">使用动态加载的方式集成Reveal</a></li>
+<li><a href="http://support.revealapp.com/kb/getting-started/cocoapodsreveal" target="_blank" rel="external">使用CocoaPods来集成Reveal</a>  </li>
+</ul>
+<p>文档见如上链接，本文不会累述（没错，我就是懒的介绍(๑˘ ₃˘๑)），本文只介绍使用<a href="https://cocoapods.org/" target="_blank" rel="external">CocoaPods</a>的真机测试方式，以及全局Xcode模拟器的测试方式。  </p>
+<p>==&gt; 真机📱<br>使用CocoaPods为真机测试集成Reveal非常简单，基本步骤如下： </p>
+<ul>
+<li>项目目录下<code>$ vim Podfile</code></li>
+<li>加入<code>pod &#39;Reveal-iOS-SDK&#39;, :configurations =&gt; [&#39;Debug&#39;]</code>  </li>
+<li>安装Pod<code>$ pod install</code>   </li>
+</ul>
+<p>安装完成后，你的工程就已经为真机Debug模式，配置好了Reveal使用所需要的设置，此时你Run起你的项目，就可以在Reveal上查看层级了。  </p>
+<p>==&gt; 模拟器💻<br>相比于真机，我们在模拟器上运行的次数会更多，基本步骤如下：  </p>
+<ul>
+<li>增加一个系统断点，工程  View → Navigators → Show Breakpoint Navigator，点击左下角 <strong>+</strong> 号，选择<strong>Add Symbolic Breakpoint</strong>  </li>
+<li>在弹出的断点配置框中，设置<strong>Symbol</strong>为<strong>UIApplicationMain</strong>  </li>
+<li>点击<strong>Add Action</strong>（Debugger Command 模式）输入：<code>expr (Class)NSClassFromString(@&quot;IBARevealLoader&quot;) == nil ? (void *)dlopen(&quot;/Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/libReveal.dylib&quot;, 0x2) : ((void*)0)</code>  </li>
+<li>勾选<strong>Automatically continue after evaluating actions</strong>选项  </li>
+</ul>
+<p>此时，Run后就可以利用Reveal查看层级了，不过这样每个工程都需要配置这个断点，很是麻烦，可以通过如下方式一劳永逸：  </p>
+<ul>
+<li>右键刚创建的断点</li>
+<li>选择<strong>Move Breakpoint To</strong> → <strong>User</strong></li>
+</ul>
+<p>Done.</p>
+<h2 id="Finally"><a href="#Finally" class="headerlink" title="Finally"></a>Finally</h2><p>至此，终于可以用<strong>正确的姿势</strong>在真机、模拟器运行后，尽情的在Reveal上查看层级、修改属性啦！(≖‿ゝ≖)✧</p>
+<p>注：如果对Reveal想更深入的了解，移步<a href="http://support.revealapp.com/" target="_blank" rel="external">http://support.revealapp.com/</a></p>
+</div></article></div></section><footer><div class="paginator"><a href="/2016/07/30/需要设计师知道的一个小细节/" class="next">下一篇</a></div><div data-thread-key="2016/08/17/新版Reveal的正确使用方式-1-6-3/" data-title="新版Reveal的正确使用方式(1.6.3)" data-url="http://lcrnice.github.com/2016/08/17/新版Reveal的正确使用方式-1-6-3/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+
+</script><div class="copyright"> <p>感兴趣可以关注<a href="https://github.com/Lcrnice">我的GitHub</a> 或关注微博<a href="http://weibo.com/u/2597892552/">@Lcrnice丶</a></p><p>© 2015 - 2016 <a href="http://lcrnice.github.com">Lcrnice</a> · Powered by Hexo</p></div></footer></div><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script></body></html>
